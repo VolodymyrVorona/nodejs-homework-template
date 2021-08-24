@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const contactsOperations = require("../../model/contacts");
-const { createContactSchema } = require("../../validation");
+const {
+  createContactSchema,
+  updateContactSchema,
+} = require("../../validation");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -62,7 +65,28 @@ router.delete("/:contactId", async (req, res, next) => {
 });
 
 router.patch("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  try {
+    const { error } = updateContactSchema.validate(req.body);
+
+    if (error) {
+      return res.status(400).json({
+        message: error.message,
+      });
+    }
+
+    const { contactId } = req.params;
+
+    const updatedContact = await contactsOperations.update(contactId, req.body);
+
+    if (!updatedContact) {
+      return res.status(404).json({
+        message: "Not found",
+      });
+    }
+    res.json({ updatedContact });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

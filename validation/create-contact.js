@@ -12,7 +12,7 @@ const createContactSchema = Joi.object({
     })
     .required(),
   phone: Joi.string()
-    .pattern(/^((\+)33|0)[1-9](\d{2}){4}$/)
+    .pattern(/\([0-9]{3}\) [0-9]{3}-[0-9]{4}/)
     .required(),
 });
 
