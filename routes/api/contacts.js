@@ -75,7 +75,6 @@ router.patch("/:contactId", async (req, res, next) => {
     }
 
     const { contactId } = req.params;
-    console.log(contactId);
 
     const updatedContact = await contactsOperations.update(contactId, req.body);
 
