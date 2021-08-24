@@ -4,7 +4,7 @@ const getById = async (id) => {
   // eslint-disable-next-line no-useless-catch
   try {
     const contacts = await getAll();
-    const contact = contacts.find((item) => item.id === id);
+    const contact = contacts.find((item) => item.id === Number(id));
     if (!contact) {
       return null;
     }
