@@ -23,3 +23,11 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
+// kfNbS3GrcQHJljhc
+
+/*
+ "eslint-config-prettier": "^8.3.0",
+ "eslint-plugin-prettier": "^3.4.1",
+ "prettier": "^2.3.2"
+*/

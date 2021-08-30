@@ -2,7 +2,6 @@ const updateContactsFile = require("./updateContactsFile");
 const getAll = require("./getAll");
 
 const remove = async (id) => {
-  // eslint-disable-next-line no-useless-catch
   try {
     const contacts = await getAll();
     const idx = contacts.findIndex((item) => item.id === id);
