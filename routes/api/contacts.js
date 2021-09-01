@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  createContactSchema,
-  updateContactSchema,
-} = require("../../model/contacts");
+const { createContactSchema } = require("../../model/contacts");
 const { validation } = require("../../middlewares");
 const ctrl = require("../../controllers/contacts");
 

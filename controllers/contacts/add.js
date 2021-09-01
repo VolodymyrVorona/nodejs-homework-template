@@ -1,5 +1,3 @@
-// const contactsOperations = require("../../model/contacts");
-// const { createContactSchema } = require("../../validation/");
 const { Contact } = require("../../model");
 
 const add = async (req, res, next) => {
