@@ -10,8 +10,12 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
+    console.log("Database connection successful");
     app.listen(PORT, () => {
       console.log(`Server running. Use our API on port: ${PORT}`);
     });
   })
-  .catch(console.log);
+  .catch((error) => {
+    console.log(`Server hasn't been started. Error: ${error.message}`);
+    process.exit(1);
+  });
