@@ -1,91 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
-const contactsOperations = require("../../model/contacts");
-const {
-  createContactSchema,
-  updateContactSchema,
-} = require("../../validation");
+const { createContactSchema } = require("../../model/contacts");
+const { validation } = require("../../middlewares");
+const ctrl = require("../../controllers/contacts");
 
-router.get("/", async (req, res, next) => {
-  try {
-    const contacts = await contactsOperations.getAll();
-    res.json({ contacts });
-  } catch (error) {
-    next(error);
-  }
-});
+const createContactValidation = validation(createContactSchema);
 
-router.get("/:contactId", async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const contact = await contactsOperations.getById(contactId);
-    if (!contact) {
-      return res.status(404).json({
-        message: "Not found",
-      });
-    }
-    res.json({ contact });
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/", ctrl.getAll);
 
-router.post("/", async (req, res, next) => {
-  try {
-    const { error } = createContactSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({
-        message: "missing required name field",
-      });
-    }
-    const newContact = await contactsOperations.add(req.body);
-    res.status(201).json({
-      newContact,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/:contactId", ctrl.getById);
 
-router.delete("/:contactId", async (req, res, next) => {
-  try {
-    const { contactId } = req.params;
-    const deleteContact = await contactsOperations.getById(contactId);
-    if (!deleteContact) {
-      return res.status(404).json({
-        message: "Not found",
-      });
-    }
-    res.json({ deleteContact });
-  } catch (error) {
-    next(error);
-  }
-});
+router.post("/", createContactValidation, ctrl.add);
 
-router.patch("/:contactId", async (req, res, next) => {
-  try {
-    const { error } = updateContactSchema.validate(req.body);
+router.delete("/:contactId", ctrl.removeById);
 
-    if (error) {
-      return res.status(400).json({
-        message: error.message,
-      });
-    }
+router.put("/:contactId", createContactValidation, ctrl.updateById);
 
-    const { contactId } = req.params;
-
-    const updatedContact = await contactsOperations.update(contactId, req.body);
-
-    if (!updatedContact) {
-      return res.status(404).json({
-        message: "Not found",
-      });
-    }
-    res.json({ updatedContact });
-  } catch (error) {
-    next(error);
-  }
-});
+router.patch("/:contactId/favorite", ctrl.updateFavorite);
 
 module.exports = router;
