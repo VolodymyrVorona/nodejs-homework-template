@@ -3,7 +3,6 @@ const validation = (schema) => {
     const { error } = schema.validate(req.body);
 
     if (error) {
-      console.log("ERROR!!!");
       return res.status(400).json({
         message: error.message,
       });

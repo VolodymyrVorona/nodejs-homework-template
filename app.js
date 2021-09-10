@@ -33,5 +33,3 @@ app.use((error, _, res, __) => {
   });
 });
 module.exports = app;
-
-//LB8yMB7DrPiK9URG

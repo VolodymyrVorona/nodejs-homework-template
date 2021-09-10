@@ -7,9 +7,6 @@ const isEmpty = (obj) =>
 const updateFavorite = async (req, res) => {
   if (isEmpty(req.body)) {
     throw new BadRequest("missing field favorite");
-    // return res.status(400).json({
-    //   message: "missing field favorite",
-    // });
   }
 
   const { contactId } = req.params;
@@ -23,9 +20,6 @@ const updateFavorite = async (req, res) => {
 
   if (!result) {
     throw new NotFound("Not found");
-    //   return res.status(404).json({
-    //     message: "Not found",
-    //   });
   }
   res.json({ result });
 };
