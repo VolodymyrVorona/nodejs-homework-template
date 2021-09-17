@@ -1,22 +1,32 @@
 const fs = require("fs/promises");
 const path = require("path");
+const Jimp = require("jimp");
 
 const { User } = require("../../model");
 
 const avatarDir = path.join(__dirname, "../../", "public/avatars");
 
 const updateAvatar = async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization.split(" ")[1];
-
-  const { path: tempPath, filename } = req.file;
-  const uploadPath = path.join(avatarDir, filename);
-
   try {
-    await fs.rename(tempPath, uploadPath);
-    const avatar = `public/avatars/${filename}`;
+    const id = String(req.user._id);
 
-    await User.findOneAndUpdate(token, { avatar });
+    const { path: tempPath, filename } = req.file;
+    const uploadPath = path.join(avatarDir, id, filename);
+
+    const file = await Jimp.read(tempPath);
+    await file
+      .autocrop()
+      .cover(
+        250,
+        250,
+        Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE
+      )
+      .writeAsync(tempPath);
+
+    await fs.rename(tempPath, uploadPath);
+    const avatar = `/avatars/${id}/${filename}`;
+
+    await User.findByIdAndUpdate(id, { avatar });
     res.json({
       status: "success",
       code: 200,
