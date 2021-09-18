@@ -1,5 +1,10 @@
+const fs = require("fs/promises");
+const path = require("path");
+
 const { Conflict } = require("http-errors");
 const { User } = require("../../model");
+
+const productsDir = path.join(__dirname, "../../", "public/avatars");
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -12,6 +17,9 @@ const register = async (req, res) => {
   const newUser = new User({ email });
   newUser.setPassword(password);
   await newUser.save();
+
+  const dirPath = path.join(productsDir, String(newUser._id));
+  await fs.mkdir(dirPath);
 
   res.status(201).json({
     status: "201 Created",

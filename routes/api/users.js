@@ -6,6 +6,7 @@ const {
   validation,
   controllerWrapper,
   authenticate,
+  upload,
 } = require("../../middlewares");
 const ctrl = require("../../controllers/users");
 
@@ -22,6 +23,13 @@ router.get(
   "/current",
   controllerWrapper(authenticate),
   controllerWrapper(ctrl.getUser)
+);
+
+router.patch(
+  "/avatars",
+  controllerWrapper(authenticate),
+  upload.single("avatar"),
+  controllerWrapper(ctrl.updateAvatar)
 );
 
 module.exports = router;
