@@ -1,3 +1,5 @@
+const { InternalServerError } = require("http-errors");
+
 const sgMail = require("@sendgrid/mail");
 require("dotenv").config();
 
@@ -11,7 +13,7 @@ const sendMail = async (data) => {
     await sgMail.send(mail);
     return true;
   } catch (error) {
-    return false;
+    throw new InternalServerError(error.message);
   }
 };
 
